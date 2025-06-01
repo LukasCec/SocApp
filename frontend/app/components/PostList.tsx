@@ -5,9 +5,10 @@ interface PostListProps {
     posts: Post[];
     onLike: (postId: string) => void;
     onAddComment: (postId: string, commentText: string) => void;
+    onDeletePost: (postId: string) => void;
 }
 
-export default function PostList({ posts, onLike, onAddComment }: PostListProps) {
+export default function PostList({ posts, onLike, onAddComment, onDeletePost }: PostListProps) {
     const [commentTexts, setCommentTexts] = useState<{ [postId: string]: string }>({});
 
     if (posts.length === 0) {
@@ -31,8 +32,13 @@ export default function PostList({ posts, onLike, onAddComment }: PostListProps)
                     >
                         👍 {post.likes}
                     </button>
-
-
+                    <button
+                        onClick={() => onDeletePost(post.id)}
+                        className="ml-2 text-red-400 hover:text-red-600"
+                        title="Zmazať príspevok"
+                    >
+                        🗑️
+                    </button>
                     <div className="mt-4">
                         <div className="font-bold mb-1">Komentáre:</div>
                         {post.comments.length === 0 && (
@@ -45,7 +51,6 @@ export default function PostList({ posts, onLike, onAddComment }: PostListProps)
                                 </li>
                             ))}
                         </ul>
-                        {/* Form - add commentz*/}
                         <form
                             className="flex gap-2"
                             onSubmit={e => {
